@@ -1,0 +1,12 @@
+#app-container {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5em;
+  margin: 3em;
+}
+
+#app-container > section {
+  border: 1px solid;
+  padding: 0 2em;
+}
