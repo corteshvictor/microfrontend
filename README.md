@@ -490,3 +490,7 @@ module.exports = {
   padding: 0 2em;
 }
 ```
+
+Si ejecutas cada proyecto y al abrir el navegar para ingresar a la dirección http://localhost:8080 podemos notar que la aplicación se ve como la siguiente imagen después de aplicar los estilos.
+
+![Vista Aplicación](https://github.com/corteshvictor/microfrontend/blob/main/img/AppFinal.png)
