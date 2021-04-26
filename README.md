@@ -5,9 +5,9 @@
 - [Resumen](#resumen)
 - [Ejemplo a construir](#ejemplo-a-construir)
 - [Categorías de Integración](#categorías-de-integración)
-  --[Integración en tiempo de construcción (Build-Time Integration)](#integración-en-tiempo-de-construcción-build-time-integration)
-  --[Integración en tiempo de ejecución (Run-Time Integration)](#integración-en-tiempo-de-ejecución-run-time-integration)
-  --[Integración en el servidor (Server Integration)](#integración-en-el-servidor-server-integration)
+  - [Integración en tiempo de construcción (Build-Time Integration)](#integración-en-tiempo-de-construcción-build-time-integration)
+  - [Integración en tiempo de ejecución (Run-Time Integration)](#integración-en-tiempo-de-ejecución-run-time-integration)
+  - [Integración en el servidor (Server Integration)](#integración-en-el-servidor-server-integration)
 - [Código del ejemplo a construir](#código-del-ejemplo-a-construir)
 
 En este artículo vamos a tratar el lado técnico de los microfrontend, lo primero que vamos a cubrir es, exactamente lo que es un microfrontend y obviamente, una parte muy importante, la comprensión de lo que son y cómo usarlos.
