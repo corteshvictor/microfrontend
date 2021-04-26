@@ -14,7 +14,7 @@ module.exports = {
       name: "restaurants",
       filename: "remoteEntry.js",
       exposes: {
-        "./RestaurantsIndex": "./src/index",
+        "./RestaurantsMain": "./src/index",
       },
     }),
   ],
