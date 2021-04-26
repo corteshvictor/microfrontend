@@ -16,7 +16,7 @@ const products = [
   },
 ];
 
-let htmlProducts = `<h2>Componente lista de productos</h2>`;
+let htmlProducts = `<h2>Microfrontend - lista de productos</h2>`;
 for (let product of products) {
   htmlProducts += `<section>
     <h3>${product.name}</h3>

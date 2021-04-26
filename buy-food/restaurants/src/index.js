@@ -16,7 +16,7 @@ const restaurants = [
   },
 ];
 
-let htmlRestaurants = `<h2>Componente lista de restaurantes</h2>`;
+let htmlRestaurants = `<h2>Microfrontend - lista de restaurantes</h2>`;
 for (let restaurant of restaurants) {
   htmlRestaurants += `<section>
     <h3>${restaurant.name}</h3>
