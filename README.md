@@ -28,7 +28,9 @@ Teniendo en cuenta los tres puntos anteriores, podemos plantearnos los siguiente
 En resumidas cuentas, para nuestra aplicación, tenemos estas tres páginas o secciones separadas.
 
 Imaginemos que estamos construyendo la aplicación utilizando un enfoque clásico donde tenemos una aplicación de una sola página, la famosa SPA (single-page application). Podríamos hacerlo con cualquier librería o framework como React, Svelte, Vue, Angular entre otros.
+
 ![SPA](https://github.com/corteshvictor/microfrontend/blob/main/img/img_1.png?raw=true)
+
 Dentro del proyecto, vamos a tener todo el código entorno a la implementación, paginación para listar restaurantes, productos, toda la cantidad necesaria de código, para filtros, búsquedas, para implementar el carrito de comprar y todo el código necesario para que interactúen estas secciones entre ellas causando que todo nuestro código de nuestra aplicación este en una sola base o en un único proyecto.
 
 Podemos decir que es una aplicación monolítica de una sola página, ahora bien, si quisiéramos convertir esto en una aplicación microfrontend, podemos mirar nuestras maquetas o diseños originales para identificar cada característica distinta y principal dentro ella.
@@ -63,6 +65,7 @@ Hay un beneficio gigantesco que obtenemos, y es que cada una de estas aplicacion
 - No hay dependencia directa entre ellas.
 
 Lo que significa que podemos asignar la implementación del listado de restaurantes a un equipo de desarrollado No. 1, podemos asignar la aplicación del listado de productos a un equipo de desarrollo No. 2 y por último asignar la característica del carrito de compras a un equipo de desarrollo No. 3 totalmente diferentes a los otros equipos.
+
 ![App con equipos diferentes](https://github.com/corteshvictor/microfrontend/blob/main/img/img_4.png?raw=true)
 
 Estos pueden ser tres equipos de desarrollo o ingeniería totalmente diferentes dentro de la empresa, hasta puedes utilizar un outsourcing para que construya cierta característica. Con esto, los equipos pueden decidir que hacer, tomar decisiones técnicas totalmente diferentes para implementar cada uno de estos proyectos.
@@ -96,6 +99,7 @@ Vamos a realizar nuestra aplicación para comprar comida de diferentes restauran
 En primer lugar, tenemos un listado de diferentes restaurantes que están disponibles para seleccionar. También tenemos una lista de diferentes productos que están disponibles para la venta. Por último, tenemos una pagina del carrito de compras que va a mostrar el número de artículos que un usuario tiene en su carrito. Recordemos que toda esta información es texto plano, este número es un valor generado al azar que vamos a pegar en el código.
 
 Nos dimos cuenta de inmediato que tenemos tres características distintas, podríamos decir que, en una aplicación monolítica, podemos tener un componente de la aplicación que tenga un componente para la lista de restaurantes, otro para la lista de artículos y un componente para el carro de compras.
+
 ![Solución sin microfrontend](https://github.com/corteshvictor/microfrontend/blob/main/img/img_5.png?raw=true)
 
 #### ¿Cómo enfocaríamos esto si estuviéramos haciendo uso de microfrontend?
@@ -103,11 +107,13 @@ Nos dimos cuenta de inmediato que tenemos tres características distintas, podr�
 Podemos decidir tomar cada característica o sección importante de nuestro producto y ponerlo en una aplicación microfrontend diferente para que consiguiésemos tener micro-aplicaciones y no una sola aplicación que contiene todo el código relacionado con nuestras características planteadas.
 
 Entonces, lo que queremos es, crear una aplicación que solo contenga el código necesario para obtener el listado de nuestros restaurantes y mostrarlos en pantalla, otra aplicación para obtener el listado de los productos y visualizarlo en la página y una tercera aplicación microfrontend que contenga todo el código necesario para conseguir que el carrito muestre su información.
+
 ![Solución con microfrontend](https://github.com/corteshvictor/microfrontend/blob/main/img/img_6.png?raw=true)
 
 Ahora bien, ya podemos darnos cuenta de que, si solo tenemos estos tres microfrontends, podemos tener un reto bastante significante para conseguir que estas cosas se muestren en nuestra pagina o pantalla. En otras palabras, ¿cómo sabemos que el _MFE No. 1_ necesita ser mostrado en la parte de arriba de nuestra pagina, que el _MFE No. 2_ tiene que estar ubicado en el centro y que el _MFE No. 3_ tiene que ser mostrado en la parte inferior?
 
 Para dar solución, muy a menudo acabamos creando una cuarta aplicación microfronted a lo que llamamos o solemos referirnos como el Contenedor **(Container)**. El contenedor es el que decide cuando y dónde mostrar todos los diferentes microfronted que tenemos.
+
 ![Container](https://github.com/corteshvictor/microfrontend/blob/main/img/img_7.png?raw=true)
 
 Para construir esta pequeña aplicación falsa, vamos a terminar haciendo 4 pequeños proyectos. Vamos a realizar el contenedor, un microfronted para mostrar el listado de restaurantes, otro para un listado de productos y uno ultimo para mostrar nuestro carrito de compras.
@@ -182,7 +188,8 @@ Vamos a crear una carpeta separada, para cada uno de nuestros diferentes microfr
 
 #### Estructura del proyecto
 
-![](https://github.com/corteshvictor/microfrontend/blob/main/img/folder.png?raw=true)
+![estructura del proyecto](https://github.com/corteshvictor/microfrontend/blob/main/img/folder.png?raw=true)
+
 Cada una de estas carpetas va a tener todo el código necesario para implementar el proyecto y conseguir que se ejecute de forma aislada. Van a tener un archivo indice para nuestra aplicación, un archivo HTML para visualizar el contenido, un package.json para la lista de nuestras dependencias de cada subproducto o microfrontend y finalmente, un archivo de configuración de webpack. Vamos a realizar el ejército muy vanilla y con datos falsos.
 
 **Nota:** Como dije antes, no voy a explicar muchas cosas del código, ya que para este articulo, lo ideal, es que tengas conocimientos básicos de html, javascript y webpack. Voy a enfocarme en lo que considere importante. Adicional estoy utilizando la versión 14 de node.js, recomiendo utilizar esta misma versión o desde la 12 en adelante.
