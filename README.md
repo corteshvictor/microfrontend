@@ -1,5 +1,9 @@
 # Microfrontends
 
+En este artículo vamos a tratar el lado técnico de los microfrontend, lo primero que vamos a cubrir es, exactamente lo que es un microfrontend y obviamente, una parte muy importante, la comprensión de lo que son y cómo usarlos.
+
+Para entender realmente los microfrontends, primero quiero que imaginen que estamos construyendo una aplicación de comercio electrónico donde los clientes pueden pedir diferentes tipos de comidas a diferentes restaurantes.
+
 - [Aplicación de comercio electrónico](#aplicación-de-comercio-electrónico)
 - [Beneficios](#beneficios)
 - [Resumen](#resumen)
@@ -13,10 +17,13 @@
   - [Host o Contenedor](#host-o-contenedor)
   - [Lista de Productos](#lista-de-productos)
   - [Carrito de Compras](#carrito-de-compras)
-
-En este artículo vamos a tratar el lado técnico de los microfrontend, lo primero que vamos a cubrir es, exactamente lo que es un microfrontend y obviamente, una parte muy importante, la comprensión de lo que son y cómo usarlos.
-
-Para entender realmente los microfrontends, primero quiero que imaginen que estamos construyendo una aplicación de comercio electrónico donde los clientes pueden pedir diferentes tipos de comidas a diferentes restaurantes.
+- [Posibles errores](#posibles-errores)
+  - [Cuando el atributo id del html es igual al nombre de nuestra aplicación remota en el contenedor](#cuando-el-atributo-id-del-html-es-igual-al-nombre-de-nuestra-aplicación-remota-en-el-contenedor)
+  - [Cuando quieres utilizar un import normal y no un import de función](#cuando-quieres-utilizar-un-import-normal-y-no-un-import-de-función)
+  - [Cuando el nombre del proyecto remoto no coincide con el contenedor](#cuando-el-nombre-del-proyecto-remoto-no-coincide-con-el-contenedor)
+  - [Cuando el import de un módulo no coincide con la propiedad remota del ModuleFederetionPlugin](#cuando-el-import-de-un-módulo-no-coincide-con-la-propiedad-remota-del-modulefederetionplugin)
+  - [Cuando el import de un módulo no coincide con el alias del proyecto remoto](#cuando-el-import-de-un-módulo-no-coincide-con-el-alias-del-proyecto-remoto)
+- [Compartir dependencias entre diferentes subproyectos](#compartir-dependencias-entre-diferentes-subproyectos)
 
 ## Aplicación de comercio electrónico
 
@@ -319,7 +326,7 @@ new ModuleFederationPlugin({
 
 - **Name:** Es el nombre de nuestra aplicación remota. quiero resaltar que este nombre debe ser igual al valor `restaurants` que esta antes del `@` de la URL donde se busca la aplicación remota de restaurants en el contenedor. Mas adelante resaltamos esta parte.
 - **filename:** Establece el nombre del archivo manifiesto (manifest). Por convención se declara con el nombre `remoteEntry.js` pero lo puedes nombrar como quieras, mi recomendación utiliza remoteEntry a menos que tengas una buena razón para cambiarlo.
-- **exposes:** Es un objeto con todos los alias de los nombres de los archivos que quieres exponer para que tu Host o Contenedor lo pueda obtener. Pueden notar que esta accediendo al archivo `index.js` dentro de la carpeta `src` y a esta ruta le da un alias con el nombre de `RestaurantsMain`.
+- **exposes:** Es un objeto con todos los alias de los nombres de los archivos que quieres exponer para que tu Host o Contenedor lo pueda obtener. Pueden notar que esta accediendo al archivo `index.js` dentro de la carpeta `src` y a esta ruta le da un alias con el nombre de `RestaurantsMain`, este alias es utilizado por el contenedor para encontrar el archivo, si no están iguales se presenta un error. Puedes ver la falla [Cuando el import de un módulo no coincide con el alias del proyecto remoto](#cuando-el-import-de-un-módulo-no-coincide-con-el-alias-del-proyecto-remoto)
 
 **Nota:** Para la lista de productos y carrito de compra, el código prácticamente es muy parecido al de la lista de restaurantes, así que no veo necesario resaltar los códigos importantes, son los mismos fragmentos de restaurantes.
 
@@ -366,15 +373,20 @@ Esta linea de código, lo único que estamos haciendo es importar el archivo `bo
 - bootstrap.js
 
 ```javascript
+import "restaurants/RestaurantsMain";
 import "products/ProductsMain";
 import "cart/CartMain";
-import "restaurants/RestaurantsMain";
 
 console.log("Lógica del container");
 ```
 
 Los tres import son importaciones de los módulos o nuestras micro-aplicaciones. Por eso la importancia del archivo `index.js` porque es el que permite que tengamos accesos a estos módulos y a todas las diferentes dependencias que requiere.
-**\*Nota:** Si intentamos ir directamente a nuestro archivo `bootstrap.js` sin pasar por el `index.js`, en otras palabras, sí intentamos ejecutar esos import de primero, terminaremos con un error. Nos mostraría algún mensaje diciendo que no tenemos ningún código para esos módulos de restaurantes, productos y carrito de compras. _Puedes consultar el error que se genera [Cuando quieres utilizar un import normal y no un import de función](#cuando-quieres-utilizar-un-import-normal-y-no-un-import-de-función)_
+
+Estos imports tiene una particularidad en su estructura, por ejemplo `import "restaurants/RestaurantsMain"` la fracción `restaurants` representa nuestro módulo remoto, que este texto debe coincidir con la propiedad del objeto `remotes` del contenedor. (Este objeto remotes lo puedes encontrar en el archivo `webpack.config.js`).
+
+El otro fragmento `RestaurantsMain` es el alias del archivo expuesto en nuestro microfrontend, para este caso nuestro proyecto para listar restaurantes, en su archivo `webpack.config.js` podemos observar que este alias esta expuesto para que pueda ser utilizado. Error generado [Cuando el import de un módulo no coincide con el alias del proyecto remoto](#cuando-el-import-de-un-módulo-no-coincide-con-el-alias-del-proyecto-remoto)
+
+**Nota:** Si intentamos ir directamente a nuestro archivo `bootstrap.js` sin pasar por el `index.js`, en otras palabras, sí intentamos ejecutar esos import de primero, terminaremos con un error. Nos mostraría algún mensaje diciendo que no tenemos ningún código para esos módulos de restaurantes, productos y carrito de compras. _Puedes consultar el error que se genera [Cuando quieres utilizar un import normal y no un import de función](#cuando-quieres-utilizar-un-import-normal-y-no-un-import-de-función)_
 
 - webpack.config.js
 
@@ -575,7 +587,7 @@ module.exports = {
 
 Sí ejecutas cada proyecto y al abrir el navegador para ingresar a la dirección http://localhost:8080 podemos notar que la aplicación se ve parecida a la siguiente imagen después de aplicar los estilos.
 
-![Vista final de la aplicación](https://github.com/corteshvictor/microfrontend/blob/main/img/AppFinal.png)
+![Vista final de la aplicación](https://github.com/corteshvictor/microfrontend/blob/main/img/AppFinal.png?raw=true)
 
 ## Posibles errores
 
@@ -583,11 +595,11 @@ A continuación vamos a resaltar los errores mas comunes o típicos que podemos 
 
 ### Cuando el atributo id del html es igual al nombre de nuestra aplicación remota en el contenedor
 
-![Vista final de la aplicación](https://github.com/corteshvictor/microfrontend/blob/main/img/fnError.png)
+![Error cuando el id es igual al nombre](https://github.com/corteshvictor/microfrontend/blob/main/img/fnError.png?raw=true)
 
 Sólo quiero contarte un poco más sobre este pequeño error, que puedes encontrar y que es difícil de solucionar. Así que en primer lugar, en las herramientas de desarrollo de mi navegador, voy a abrir mi pestaña de Network y vamos a mirar el archivo `remoteEntry.js` que viene de http://localhost:8081/remoteEntry.js, que es nuestra aplicación para listar los restaurantes.
 
-![Respuesta archivo remoteEntry.js](https://github.com/corteshvictor/microfrontend/blob/main/img/remoteEntryJS.png)
+![Respuesta archivo remoteEntry.js](https://github.com/corteshvictor/microfrontend/blob/main/img/remoteEntryJS.png?raw=true)
 
 Y si damos un vistazo a la respuesta, quiero que noten algo, en nuestra línea 9 usted ve que dice `var restaurants;`, se esta declarando una variable y luego asigna un valor a esa variable y el valor que asigna es básicamente el resultado de todas estas cosas de Webpack para acceder al código de nuestro restaurante.
 
@@ -597,7 +609,7 @@ Esta variable de `restaurants` está siendo creada por nuestro archivo `remoteEn
 
 Así que esencialmente, tenemos un objeto aquí que nos permite acceder a todo el código que estamos buscando para cargar en nuestro contenedor.
 
-![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/fnError_2.png)
+![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/fnError_2.png?raw=true)
 
 Si se nos presenta el error `fn is not a function` intenta imprimir `restaurants` como en la imagen, esa variable global, ya no trae el objeto con funciones, en su lugar obtenemos una referencia a ese elemento HTML, en nuestro caso al `section`. Así que este es el error, es algo muy engañoso.
 
@@ -607,7 +619,7 @@ Es un error bastante raro, pero debemos tener claro y entender que él id de un 
 
 ### Cuando quieres utilizar un import normal y no un import de función
 
-![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/errorImport.png)
+![Error cuando utilizas un import normal](https://github.com/corteshvictor/microfrontend/blob/main/img/errorImport.png?raw=true)
 
 Al utilizar un import normal, vemos que se genera un error por eso tienes que utilizar la función de importación `import("./bootstrap")`, porque permite que Webpack tenga la oportunidad, dentro del navegador de ir y obtener algunas dependencias antes de ejecutar el código de `bootstrap.js`. es decir, de darse cuenta de que antes de ejecutar ese archivo `bootstrap.js`, tenemos que ir a buscar los códigos de nuestras micro-aplicaciones.
 
@@ -615,10 +627,64 @@ Este es el objetivo del archivo `index.js` con la función de importación, es s
 
 ### Cuando el nombre del proyecto remoto no coincide con el contenedor
 
-![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/errorNombreRemoto.png)
+![Error cuando el nombre no es igual](https://github.com/corteshvictor/microfrontend/blob/main/img/errorNombreRemoto.png?raw=true)
+
+Como vemos en la imagen, si el nombre que establecimos en nuestro proyecto de lista de restaurantes es diferente al valor de la propiedad restaurants que se utiliza para concadenar con la URL de nuestro remoteEntry, se genera un error por falla en la carga del script. Así que, tener la precaución que estos archivos coincidan con los nombres.
 
 ### Cuando el import de un módulo no coincide con la propiedad remota del ModuleFederetionPlugin
 
-![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/errorContenedor_1.png)
+![Error cuando no es igual el módulo con el import](https://github.com/corteshvictor/microfrontend/blob/main/img/errorContenedor_1.png?raw=true)
 
-Cuando el import intenta llamar al módulo restaurants `import "restaurants/RestaurantsMain"`, este lo busca en los módulos y como no esta va a nuestra configuración del contenedor para obtener ese módulo de los remotos del ModuleFederationPlugin, pero como la propiedad del remoto es diferente a restaurants por eso muestra el error.
+Cuando el import intenta llamar al módulo restaurants `import "restaurants/RestaurantsMain"`, este lo busca en los módulos y como no esta, va a nuestra configuración del contenedor para obtener ese módulo de los remotos del ModuleFederationPlugin, pero, como visualizamos en la imagen, la propiedad del remoto es diferente a restaurants utilizado en el import, por eso muestra o se genera el error. Tener cuidado que estos archivos coincidan con el nombre.
+
+### Cuando el import de un módulo no coincide con el alias del proyecto remoto
+
+![Error cuando el alias no es igual](https://github.com/corteshvictor/microfrontend/blob/main/img/errorAlias.png?raw=true)
+
+El Alias de los nombres de los archivos expuestos, debe coincidir con los importados en el contenedor, para que no se genere el error como lo indica la imagen.
+
+## Compartir dependencias entre diferentes subproyectos
+
+No voy a colocar ejemplo de esto, pero voy a mencionar de forma muy rápida de como hacerlo.
+
+Si tienes la misma dependencia en los diferentes microfronted, el contenedor las va a importar cuantas veces sea necesaria, esto es un problema, si la dependencia es algo pesada, entonces este archivo JavaScript se va a cargar tantas veces este repetida la dependencia en los proyectos.
+
+Para compartir la dependencia, tendrías que ir a cada micro-proyecto y en nuestro ModuleFederationPlugin vamos a utilizar la propiedad `shared`
+
+```javascript
+new ModuleFederationPlugin({
+      name: "restaurants",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./RestaurantsMain": "./src/index",
+      },
+      shared:['Dependencia a compartir']
+    }),
+```
+
+```javascript
+new ModuleFederationPlugin({
+      name: "products",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./ProductsMain": "./src/index",
+      },
+      shared:['Dependencia a compartir']
+    }),
+```
+
+Imagina que nuestros archivos `index.js` tiene al principio algo como
+
+```javascript
+import MiDependencia from "MiDependencia";
+```
+
+y nosotros solo configuramos esto`shared:['MiDependencia']`, vamos a tener un problema, porque no solo es este cambio que debes contemplar, porque si solo haces esto, se genera un error diciendo que el módulo compartido no está disponible para el consumo de los usuarios. `Error Shared module is not available for eager consumption`
+
+Entonces, recordar que cuando cargamos productos de forma aislada, el primer archivo que realmente se ejecuta es nuestro `index.js` y dentro de aquí tenemos un código que dice tener acceso a nuestra dependencia de forma inmediata. Como que instantáneamente queremos que `MiDependencia` esté disponible dentro de este archivo para ser utilizado de forma inmediata. Desafortunadamente, cuando marcamos `MiDependencia` como un módulo compartido, haces que se cargue por defecto de forma asincrónica, así que cuando nuestro archivo `index.js` todavía no tenemos `MiDependencia` disponible.
+
+Entonces, para solucionar ese error, usas el mismo patron que utilizamos en el contenedor, nuestro famoso `bootstrap.js`, mueves el código del `index.js` dentro de `bootstrap.js` y en `index.js` realizar una función de importación `import('./bootstrap.js')`. Recuerda que cuando utilizamos ese import en forma de función, se cargará el archivo de forma asincrónica. Cargar el archivo asíncrono recordemos que le damos a Webpack la oportunidad de ver qué archivo requiere el código de bootstrap para que se ejecute de forma correcta.
+
+Cuando Webpack tiene esa capacidad de poder analizar lo que necesitas para ejecutar el código, Webpack carga la dependencia sin problema y la va a tener disponible antes de ejecutar cualquier parte del código.
+
+Aquí toca tener presente otras cosas al compartir las dependencias, si manejas diferentes versiones entre los microfrontend, si quieres utilizar `singleton` y cosas como estas creo que es mejor investigar como funcionan.
