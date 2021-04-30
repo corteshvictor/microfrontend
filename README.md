@@ -1,6 +1,6 @@
 # Microfrontends
 
-- [aplicación de comercio electrónico](#aplicación-de-comercio-electrónico)
+- [Aplicación de comercio electrónico](#aplicación-de-comercio-electrónico)
 - [Beneficios](#beneficios)
 - [Resumen](#resumen)
 - [Ejemplo a construir](#ejemplo-a-construir)
@@ -9,6 +9,10 @@
   - [Integración en tiempo de ejecución (Run-Time Integration)](#integración-en-tiempo-de-ejecución-run-time-integration)
   - [Integración en el servidor (Server Integration)](#integración-en-el-servidor-server-integration)
 - [Código del ejemplo a construir](#código-del-ejemplo-a-construir)
+  - [Lista de Restaurantes](#lista-de-restaurantes)
+  - [Host o Contenedor](#host-o-contenedor)
+  - [Lista de Productos](#lista-de-productos)
+  - [Carrito de Compras](#carrito-de-compras)
 
 En este artículo vamos a tratar el lado técnico de los microfrontend, lo primero que vamos a cubrir es, exactamente lo que es un microfrontend y obviamente, una parte muy importante, la comprensión de lo que son y cómo usarlos.
 
@@ -28,9 +32,7 @@ Teniendo en cuenta los tres puntos anteriores, podemos plantearnos los siguiente
 En resumidas cuentas, para nuestra aplicación, tenemos estas tres páginas o secciones separadas.
 
 Imaginemos que estamos construyendo la aplicación utilizando un enfoque clásico donde tenemos una aplicación de una sola página, la famosa SPA (single-page application). Podríamos hacerlo con cualquier librería o framework como React, Svelte, Vue, Angular entre otros.
-
 ![SPA](https://github.com/corteshvictor/microfrontend/blob/main/img/img_1.png?raw=true)
-
 Dentro del proyecto, vamos a tener todo el código entorno a la implementación, paginación para listar restaurantes, productos, toda la cantidad necesaria de código, para filtros, búsquedas, para implementar el carrito de comprar y todo el código necesario para que interactúen estas secciones entre ellas causando que todo nuestro código de nuestra aplicación este en una sola base o en un único proyecto.
 
 Podemos decir que es una aplicación monolítica de una sola página, ahora bien, si quisiéramos convertir esto en una aplicación microfrontend, podemos mirar nuestras maquetas o diseños originales para identificar cada característica distinta y principal dentro ella.
@@ -39,7 +41,7 @@ Podemos notar que tenemos tres posibles características principales de nuestra 
 
 - la página del listado de restaurantes.
 - la página del listado de productos.
-- la pagina del carrito de la compra.
+- la página del carrito de la compra.
 
 Después de identificar cada una de estas características principales, podemos dividir cada sección en su propia base de código para que estén separadas, por lo que podríamos tener todo el código para nuestro listado de restaurantes dentro de una SPA utilizando cualquier framework o librería mencionada anteriormente. A su vez, podríamos tener todo el código de nuestro listado de productos dentro de otra SPA y también podemos tener todo el código de nuestro carrito de compra dentro de una aplicación totalmente separada a las otras dos.
 
@@ -49,7 +51,7 @@ Dentro de un enfoque microfrontend, tanto como sea posible, tratamos de evitar l
 
 ![No comunicar las aplicaciones](https://github.com/corteshvictor/microfrontend/blob/main/img/img_2.png?raw=true)
 
-En su lugar, tendríamos que cada aplicación, hacer la comunicación entre las aplicaciones por medio del enrutamiento, desde una interfaz pasar los datos o algún tipo de solicitud a una API que gestiona todos los datos dentro de cada aplicación, dependiendo de la necesidad, puedes tomar otra vía, pero para el articulo y representemos la petición a una API.
+En su lugar, tendríamos que cada aplicación, realizar la comunicación entre las aplicaciones por medio del enrutamiento, desde una interfaz pasar los datos o algún tipo de solicitud a una API que gestiona todos los datos dentro de cada aplicación, dependiendo de la necesidad, puedes tomar otra vía, pero para el articulo y representemos la petición a una API.
 
 ![Peticiones a las API de cada App](https://github.com/corteshvictor/microfrontend/blob/main/img/img_3.png?raw=true)
 
@@ -65,10 +67,9 @@ Hay un beneficio gigantesco que obtenemos, y es que cada una de estas aplicacion
 - No hay dependencia directa entre ellas.
 
 Lo que significa que podemos asignar la implementación del listado de restaurantes a un equipo de desarrollado No. 1, podemos asignar la aplicación del listado de productos a un equipo de desarrollo No. 2 y por último asignar la característica del carrito de compras a un equipo de desarrollo No. 3 totalmente diferentes a los otros equipos.
-
 ![App con equipos diferentes](https://github.com/corteshvictor/microfrontend/blob/main/img/img_4.png?raw=true)
 
-Estos pueden ser tres equipos de desarrollo o ingeniería totalmente diferentes dentro de la empresa, hasta puedes utilizar un outsourcing para que construya cierta característica. Con esto, los equipos pueden decidir que hacer, tomar decisiones técnicas totalmente diferentes para implementar cada uno de estos proyectos.
+Estos pueden ser tres equipos de desarrollo o ingeniería totalmente diferentes dentro de la empresa, hasta puedes utilizar un outsourcing para que construya cierta característica. Con esto, los equipos pueden decidir qué hacer, tomar decisiones técnicas totalmente diferentes para implementar cada uno de estos proyectos.
 
 #### Por ejemplo.
 
@@ -76,30 +77,29 @@ El equipo de desarrollo No. 1, puede decidir implementar React, el No. 2 se deci
 
 ## Resumen
 
-Vamos a resumir lo que hemos hablado hasta el momento para centrar las ideas y tener el concepto un poco más claro.
+Vamos a resumir lo que hemos hablado hasta el momento para centrar las ideas y tener el concepto un poco mas claro.
 Los microfrontend es donde tomamos una aplicación monolítica y la dividimos en múltiples aplicaciones más pequeñas, cada una de estas aplicaciones más pequeñas son responsables de una característica principal distinta de nuestro producto tanto como sea posible. Intentamos evitar que estas diferentes micro-aplicaciones se comuniquen entre sí directamente.
 
-Hacemos uso de microfrontend porque permite que varios equipos de desarrollo trabajen en la misma aplicación global, pero en total aislamiento. Así, el equipo No.1 puede realizar cambios sin que estos rompan las otras secciones o características de la aplicación, pueden manejar las dependencias de su proyecto totalmente diferente a la de los otros equipos. Además, cuando empezamos a dividir nuestra aplicación en microfrontend, hace que cada una de estas partes más pequeñas sea mucho más fácil de entender y puedes hacer cambios sin romper accidentalmente alguna otra parte de nuestra aplicación global.
+Hacemos uso de microfrontend porque permite que varios equipos de desarrollo trabajen en la misma aplicación global, pero en total aislamiento. Así, el equipo No. 1 puede realizar cambios sin que estos rompan las otras secciones o características de la aplicación, pueden manejar las dependencias de su proyecto totalmente diferente a la de los otros equipos. Además, cuando empezamos a dividir nuestra aplicación en microfrontend, hace que cada una de estas partes más pequeñas sea mucho más fácil de entender y puedes hacer cambios sin romper accidentalmente alguna otra parte de nuestra aplicación global.
 
-- ¿Qué son los microfrontend?
-  -- Dividir una aplicación monolítica en varias aplicaciones más pequeñas.
-  -- Cada aplicación más pequeña es responsable de una característica distinta del producto.
-- ¿Por qué utilizarlos?
-  -- Varios equipos de desarrollo pueden trabajar de forma aislada.
-  -- Cada aplicación más pequeña es más fácil de entender y de realizar cambios.
+- **_¿Qué son los microfrontend?_**
+  - Dividir una aplicación monolítica en varias aplicaciones más pequeñas.
+  - Cada aplicación más pequeña es responsable de una característica distinta del producto.
+- **_¿Por qué utilizarlos?_**
+  - Varios equipos de desarrollo pueden trabajar de forma aislada.
+  - Cada aplicación más pequeña es más fácil de entender y de realizar cambios.
 
 ## Ejemplo a construir
 
-El siguiente ejemplo, es el que vamos a construir como nuestra aplicación para tener una mejor idea de como funciona todo este de microfronted. Vamos a realizar una aplicación muy simple, sencilla que no va a utilizar ningún framework o librería dentro de ella.
+El siguiente ejemplo, vamos a construir nuestra aplicación, para tener una mejor idea de cómo funciona todo lo de microfrontend. se va a realizar una aplicación muy simple, sencilla que no va a utilizar ningún framework o librería dentro de ella.
 
-Vamos a realizar nuestra aplicación para comprar comida de diferentes restaurantes, listaremos las secciones para tener algunos restaurantes, productos a la venta y el número de artículos que tiene en el carro de compra.
+Esta aplicación simula la compra de comida de diferentes restaurantes, listaremos las secciones para tener algunos restaurantes, productos a la venta y el número de artículos que tiene en el carro de compra.
 
 **Nota:** Quiero dejar muy claro que, estamos trabajando con datos 100% falsos. No se va a utilizar API ni nada por el estilo, tampoco vamos a tener interacción, por ende, no tenemos ninguna adición real de artículos a un carro de compras, ni nada por el estilo. En realidad, sólo estamos intentado que aparezca textos planos en la pantalla cuando se ejecute la aplicación.
 
-En primer lugar, tenemos un listado de diferentes restaurantes que están disponibles para seleccionar. También tenemos una lista de diferentes productos que están disponibles para la venta. Por último, tenemos una pagina del carrito de compras que va a mostrar el número de artículos que un usuario tiene en su carrito. Recordemos que toda esta información es texto plano, este número es un valor generado al azar que vamos a pegar en el código.
+En primer lugar, tenemos un listado de diferentes restaurantes que están disponibles para seleccionar. También tenemos una lista de diferentes productos que están disponibles para la venta. Por último, tenemos una pagina del carrito de compras, que va a mostrar el número de artículos que un usuario tiene en su carrito. Recordemos que toda esta información es texto plano, este número es un valor generado al azar que vamos a pegar en el código.
 
-Nos dimos cuenta de inmediato que tenemos tres características distintas, podríamos decir que, en una aplicación monolítica, podemos tener un componente de la aplicación que tenga un componente para la lista de restaurantes, otro para la lista de artículos y un componente para el carro de compras.
-
+Con lo planteado anteriormente, nos dimos cuenta de inmediato que tenemos tres características distintas, podríamos decir que, en una aplicación monolítica, podemos tener un componente global de la aplicación, que tenga un componente para la lista de restaurantes, otro para la lista de artículos y un componente para el carro de compras.
 ![Solución sin microfrontend](https://github.com/corteshvictor/microfrontend/blob/main/img/img_5.png?raw=true)
 
 #### ¿Cómo enfocaríamos esto si estuviéramos haciendo uso de microfrontend?
@@ -107,13 +107,11 @@ Nos dimos cuenta de inmediato que tenemos tres características distintas, podr�
 Podemos decidir tomar cada característica o sección importante de nuestro producto y ponerlo en una aplicación microfrontend diferente para que consiguiésemos tener micro-aplicaciones y no una sola aplicación que contiene todo el código relacionado con nuestras características planteadas.
 
 Entonces, lo que queremos es, crear una aplicación que solo contenga el código necesario para obtener el listado de nuestros restaurantes y mostrarlos en pantalla, otra aplicación para obtener el listado de los productos y visualizarlo en la página y una tercera aplicación microfrontend que contenga todo el código necesario para conseguir que el carrito muestre su información.
-
 ![Solución con microfrontend](https://github.com/corteshvictor/microfrontend/blob/main/img/img_6.png?raw=true)
 
 Ahora bien, ya podemos darnos cuenta de que, si solo tenemos estos tres microfrontends, podemos tener un reto bastante significante para conseguir que estas cosas se muestren en nuestra pagina o pantalla. En otras palabras, ¿cómo sabemos que el _MFE No. 1_ necesita ser mostrado en la parte de arriba de nuestra pagina, que el _MFE No. 2_ tiene que estar ubicado en el centro y que el _MFE No. 3_ tiene que ser mostrado en la parte inferior?
 
-Para dar solución, muy a menudo acabamos creando una cuarta aplicación microfronted a lo que llamamos o solemos referirnos como el Contenedor **(Container)**. El contenedor es el que decide cuando y dónde mostrar todos los diferentes microfronted que tenemos.
-
+Para dar solución, muy a menudo acabamos creando una cuarta aplicación microfronted a lo que llamamos o solemos referirnos como el Contenedor **(Container)**. El contenedor es el que decide cuándo y dónde mostrar todos los diferentes microfronted que tenemos.
 ![Container](https://github.com/corteshvictor/microfrontend/blob/main/img/img_7.png?raw=true)
 
 Para construir esta pequeña aplicación falsa, vamos a terminar haciendo 4 pequeños proyectos. Vamos a realizar el contenedor, un microfronted para mostrar el listado de restaurantes, otro para un listado de productos y uno ultimo para mostrar nuestro carrito de compras.
@@ -134,25 +132,25 @@ Es conocido también como, integración en tiempo de compilación (Compile-Time 
 
 Existen diferentes formas o métodos para implementar la integración en tiempo de construcción, pero quiero dar mi enfoque con un ejemplo muy parecido a un sistema de gestión de paquetes, como NPM, para que sea una manera bastante directa de entenderlo.
 
-Tenemos un equipo desarrollando nuestra aplicación para la lista de restaurantes, cuando este equipo termina el proyecto, informan que están listos para desplegar la aplicación. En este momento, el equipo de administrar los restaurantes publicaría la lista de restaurantes como un paquete de NPM para que este disponible y pueda ser instalado en cualquier proyecto.
+Tenemos un equipo desarrollando nuestra aplicación para la **lista de restaurantes**, cuando este equipo termina el proyecto, informan que están listos para desplegar la aplicación. En este momento, el equipo de administrar los restaurantes publicaría la lista de restaurantes como un paquete de NPM para que este disponible y pueda ser instalado en cualquier proyecto.
 
-Ya después de librado el paquete, el equipo encargado del Contenedor, instala este paquete como una dependencia del proyecto y el equipo comienza a construir su aplicación contenedora. El resultado final, sería un proyecto que tiene todo el código fuente del contenedor y todo el código fuente de nuestra lista de restaurantes.
+Ya después de librado el paquete, el equipo encargado del **Contenedor**, instala este paquete como una dependencia del proyecto y el equipo comienza a construir su aplicación contenedora. El resultado final, sería un proyecto que tiene todo el código fuente del contenedor y todo el código fuente de nuestra lista de restaurantes.
 
 #### Ventas y desventajas de este enfoque:
 
 - La Ventaja es que, es realmente fácil de configurar este flujo y es relativamente fácil de entender también. porque se produce un único paquete JavaScript público que nos permite duplicar dependencias comunes de nuestras diversas aplicaciones. Este es un flujo muy común y seguro, ya lo has implementado, pero de pronto no eras consciente que estabas realizando una integración en tiempo de compilación.
-- La desventaja de este enfoque es que, cada vez que la aplicación de la lista de restaurantes necesita ser redistribuida, tendríamos que volver a desplegar el contenedor también. Nos tocaría que volver a compilar y lanzar cada micro-aplicación para lanzar un cambio en cualquier parte individual del producto, actualizar las dependencias y desplegar el contenedor.
+- La desventaja de este enfoque es que, cada vez que la aplicación de la lista de restaurantes necesita ser redistribuida, tendríamos que volver a desplegar el contenedor también. Nos tocaría que volver a compilar y lanzar cada micro-aplicación para publicar un cambio en cualquier parte individual del producto, actualizar las dependencias y desplegar el contenedor.
 - Otra desventaja es que, el contenedor tiene acceso completo a todas nuestras micro-aplicaciones y eso puede ser muy tentador de querer acoplar las aplicaciones y esto es algo que debemos evitar en una arquitectura de microfrontend.
 
 ### Integración en tiempo de ejecución (Run-Time Integration)
 
-Es conocido también como, integración del lado del cliente (Client-Side Integration). Cuando hablamos de esta categoría, tenemos que entender que, después de que el contenedor se cargue en el navegador, es que va a tener acceso al código fuente de nuestra lista de restaurante.
+Es conocido también como, integración del lado del cliente (Client-Side Integration). Cuando hablamos de esta categoría, tenemos que entender que después de que el contenedor se cargue en el navegador, es que va a tener acceso al código fuente de nuestra lista de restaurante.
 
 De nuevo resalto que existen diferentes métodos para implementar esto, pero quiero dar un ejemplo que sea una manera fácil de comprender una integración en tiempo de ejecución.
 
-Nuevamente, tenemos un equipo de desarrollando nuestra aplicación de lista de restaurantes, dicen que es el momento de desplegar, en ese punto, en lugar de desplegar el proyecto a un sistema de gestión de paquetes, el equipo despliega su aplicación en un enlace URL, algo como, https://www.mi-app-ventasdecomida.com/lista-de-restaurantes.js, este archivo de JavaScript tiene todo el código necesario de la aplicación.
+Nuevamente, tenemos un equipo desarrollando nuestra aplicación de **lista de restaurantes**, dicen que es el momento de desplegar, en ese punto, en lugar de desplegar el proyecto a un sistema de gestión de paquetes, el equipo despliega su aplicación en un enlace **URL**, algo como, https://www.mi-app-ventasdecomida.com/lista-de-restaurantes.js, este archivo de JavaScript tiene todo el código necesario de la aplicación.
 
-El contenedor es liberado en la dirección raíz, https://www.mi-app-ventasdecomida.com y en ese momento que un cliente ingrese a ese enlace raíz, el contenedor se carga y obtendría el enlace de nuestra lista de restaurantes, el archivo JavaScript. En este enfoque, en contenedor sólo tiene acceso al código de nuestra micro-aplicación después de que el contenedor haya cargado en el navegador.
+El **contenedor** es liberado en la dirección raíz, https://www.mi-app-ventasdecomida.com y en ese momento que un cliente ingrese a ese enlace raíz, el contenedor se carga y obtendría el enlace de nuestra lista de restaurantes, es decir, carga el archivo JavaScript. En este enfoque, el contenedor sólo tiene acceso al código de nuestra micro-aplicación después de que el contenedor haya cargado en el navegador.
 
 #### Ventajas y desventajas.
 
@@ -168,7 +166,7 @@ Mientras se envía el JS para cargar el contenedor, el servidor decide si incluy
 
 En el desarrollo frontend, renderizar HTML en el servidor a partir de múltiples plantillas es algo novedoso, así que podemos tener nuestro archivo index.html que tiene elementos comunes, pero también se utiliza las inclusiones del lado del servidor para conectar el contenido especifico de cierta pagina desde fragmentos de archivos html.
 
-Ese archivo html lo puedes publicar con un servidor web/proxy y configurar las paginas de forma variable para que cuando el cliente ingrese a cierta ruta la hagas coincidir con la URL. A esto lo puedes llamar microfrontend porque has dividido el código de cierta forma que, cada pieza representa un concepto de dominio independiente. Debemos lograr que cada archivo HTML termine en el servidor web, para que cada uno tenga su propia canalización de implementación y así, se puedan realizar cambios en una pagina sin afectar las otras.
+Ese archivo html lo puedes publicar con un servidor web/proxy y configurar las paginas de forma variable para que cuando el cliente ingrese a cierta ruta la hagas coincidir con la URL. A esto lo puedes llamar microfrontend porque has dividido el código de cierta forma, que cada pieza representa un concepto de dominio independiente. Debemos lograr que cada archivo HTML termine en el servidor web, para que cada uno tenga su propia canalización de implementación y así, se puedan realizar cambios en una pagina sin afectar las otras.
 
 #### Ventajas y Desventajas
 
@@ -184,12 +182,11 @@ Voy con esta categoría porque, como les mencione, es la solución que nos brind
 
 **_El repositorio lo puedes consultar [aquí](https://github.com/corteshvictor/microfrontend) para clonarlo si no quieres hacerlo manualmente._**
 
-Vamos a crear una carpeta separada, para cada uno de nuestros diferentes microfrontend, uno para el contenedor, otro la para la lista de restaurantes, para la lista de productos y por último para nuestro carrito de compras.
+Vamos a crear una carpeta separada, para cada uno de nuestros diferentes microfrontend, uno para el contenedor, otro para la lista de restaurantes, el de la lista de productos y por último para nuestro carrito de compras.
 
 #### Estructura del proyecto
 
-![estructura del proyecto](https://github.com/corteshvictor/microfrontend/blob/main/img/folder.png?raw=true)
-
+![](https://github.com/corteshvictor/microfrontend/blob/main/img/folder.png?raw=true)
 Cada una de estas carpetas va a tener todo el código necesario para implementar el proyecto y conseguir que se ejecute de forma aislada. Van a tener un archivo indice para nuestra aplicación, un archivo HTML para visualizar el contenido, un package.json para la lista de nuestras dependencias de cada subproducto o microfrontend y finalmente, un archivo de configuración de webpack. Vamos a realizar el ejército muy vanilla y con datos falsos.
 
 **Nota:** Como dije antes, no voy a explicar muchas cosas del código, ya que para este articulo, lo ideal, es que tengas conocimientos básicos de html, javascript y webpack. Voy a enfocarme en lo que considere importante. Adicional estoy utilizando la versión 14 de node.js, recomiendo utilizar esta misma versión o desde la 12 en adelante.
@@ -221,6 +218,16 @@ A continuación, vamos a ir colocando los fragmentos de código para cada microf
   </body>
 </html>
 ```
+
+Del archivo `index.html`, quiero resaltar esta línea de código `<div id='app-restaurants'></div>` porque es aquí donde vamos a renderizar nuestro proyecto para listar los restaurantes. Adicionalmente, la descripción del atributo `id` tiene que ser diferente al nombre de nuestro componente remoto, es decir, al nombre declarado en el objeto del module federation de webpack en la lista de restaurantes.
+
+```javascript
+new ModuleFederationPlugin({
+  name: "restaurants",
+});
+```
+
+**Nota**: A nivel de ejecutar el proyecto independiente, no tienes problema en renderizar si el id es igual al nombre, este te renderiza sin problema cuando se ejecuta la aplicación de forma individual, el punto grave, es cuando quieres renderizar en el contenedor para correr todas las aplicaciones. Por eso resalto que es importante que sea diferente. Estaré resaltado un poco esta parte en la sección de [Posibles errores](#posibles-errores) que puedes tener si ese id es igual a `restaurants`
 
 - index.js
 
@@ -254,6 +261,14 @@ for (let restaurant of restaurants) {
 document.getElementById("app-restaurants").innerHTML = htmlRestaurants;
 ```
 
+Del archivo `index.js`, este fragmento de código
+
+```javascript
+document.getElementById("app-restaurants").innerHTML = htmlRestaurants;
+```
+
+es el que inserta nuestro HTML dentro de la división que mencionamos en el archivo `index.html` para agrupar todo el contenido.
+
 - webpack.config.js
 
 ```javascript
@@ -278,6 +293,155 @@ module.exports = {
     }),
   ],
 };
+```
+
+De Webpack, primero quiero resaltar la Federación de Módulos o Module Federation, que nos permite tener varias compilaciones independientes para formar una sola aplicación. Estas compilaciones separadas no deben tener dependencias entre sí, por lo que pueden desarrollarse e implementarse individualmente.
+
+Del archivo `webpack.config.js` al requerir ModuleFederationPlugin
+
+```javascript
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+```
+
+nos permite exponer y utilizar cualquier tipo de módulo compatible con Webpack. Crea una entrada de contenedor adicional con los módulos expuestos especificados y agrega referencias especificas a contenedores como externos y permite importar módulos remotos desde estos contenedores.
+
+El siguiente fragmento de código es el que utiliza el plugin federación de módulos, En el objeto, para este ejercicio, estamos armando un objeto con las propiedades `name`, `filename` y `exposes`.
+
+```javascript
+new ModuleFederationPlugin({
+  name: "restaurants",
+  filename: "remoteEntry.js",
+  exposes: {
+    "./RestaurantsMain": "./src/index",
+  },
+});
+```
+
+- **Name:** Es el nombre de nuestra aplicación remota. quiero resaltar que este nombre debe ser igual al valor `restaurants` que esta antes del `@` de la URL donde se busca la aplicación remota de restaurants en el contenedor. Mas adelante resaltamos esta parte.
+- **filename:** Establece el nombre del archivo manifiesto (manifest). Por convención se declara con el nombre `remoteEntry.js` pero lo puedes nombrar como quieras, mi recomendación utiliza remoteEntry a menos que tengas una buena razón para cambiarlo.
+- **exposes:** Es un objeto con todos los alias de los nombres de los archivos que quieres exponer para que tu Host o Contenedor lo pueda obtener. Pueden notar que esta accediendo al archivo `index.js` dentro de la carpeta `src` y a esta ruta le da un alias con el nombre de `RestaurantsMain`.
+
+**Nota:** Para la lista de productos y carrito de compra, el código prácticamente es muy parecido al de la lista de restaurantes, así que no veo necesario resaltar los códigos importantes, son los mismos fragmentos de restaurantes.
+
+#### Host o Contenedor
+
+- index.html
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Buy Food</title>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <div id="app-container">
+      <section id="app-restaurants"></section>
+      <section id="app-products"></section>
+      <section id="app-cart"></section>
+    </div>
+  </body>
+</html>
+```
+
+Del archivo `index.html` de nuestro contenedor, resalto estas tres secciones
+
+```html
+<section id="app-restaurants"></section>
+<section id="app-products"></section>
+<section id="app-cart"></section>
+```
+
+Que son donde se van a renderizar nuestras tres aplicaciones remotas en la posición que nosotros le queramos dar, adicional el atributo id debe ser igual al selector utilizado en los archivos `index.js` y como mencione anteriormente, estos id deben ser diferente a los nombres de nuestras aplicaciones remotas expuestas en el archivo `webpack.config.js`. Puedes ver la explicación de este error _[Cuando el atributo id del html es igual al nombre de nuestra aplicación remota en el contenedor](#cuando-el-atributo-id-del-html-es-igual-al-nombre-de-nuestra-aplicación-remota-en-el-contenedor)_
+
+- index.js
+
+```javascript
+import("./bootstrap");
+```
+
+Esta linea de código, lo único que estamos haciendo es importar el archivo `bootstrap.js`. Pero resalto que estamos utilizando una sintaxis diferente para la importación, que es una llamada a la función de importación, esto permite que Webpack tenga la oportunidad dentro del navegador de ir y obtener algunas dependencias antes de ejecutar el código de `bootstrap.js`.
+
+- bootstrap.js
+
+```javascript
+import "products/ProductsMain";
+import "cart/CartMain";
+import "restaurants/RestaurantsMain";
+
+console.log("Lógica del container");
+```
+
+Los tres import son importaciones de los módulos o nuestras micro-aplicaciones. Por eso la importancia del archivo `index.js` porque es el que permite que tengamos accesos a estos módulos y a todas las diferentes dependencias que requiere.
+**\*Nota:** Si intentamos ir directamente a nuestro archivo `bootstrap.js` sin pasar por el `index.js`, en otras palabras, sí intentamos ejecutar esos import de primero, terminaremos con un error. Nos mostraría algún mensaje diciendo que no tenemos ningún código para esos módulos de restaurantes, productos y carrito de compras. _Puedes consultar el error que se genera [Cuando quieres utilizar un import normal y no un import de función](#cuando-quieres-utilizar-un-import-normal-y-no-un-import-de-función)_
+
+- webpack.config.js
+
+```javascript
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+
+module.exports = {
+  mode: "development",
+  devServer: {
+    port: 8080,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+    }),
+    new ModuleFederationPlugin({
+      name: "container",
+      remotes: {
+        products: "products@http://localhost:8082/remoteEntry.js",
+        cart: "cart@http://localhost:8083/remoteEntry.js",
+        restaurants: "restaurants@http://localhost:8081/remoteEntry.js",
+      },
+    }),
+  ],
+};
+```
+
+El siguiente fragmento de código es el que utiliza el plugin federación de módulos, en los parámetros nombrados, para este ejercicio, estamos armando un objeto con las propiedades `name`, `remotes` y dentro de remotes `products`, `cart`, `restaurants`.
+
+```javascript
+new ModuleFederationPlugin({
+      name: "container",
+      remotes: {
+	    restaurants: "restaurants@http://localhost:8081/remoteEntry.js",
+        products: "products@http://localhost:8082/remoteEntry.js",
+        cart: "cart@http://localhost:8083/remoteEntry.js",
+      },
+    }),
+```
+
+- **Name:** Es el nombre de nuestro Host o Contenedor. quiero resaltar que este nombre lo puedes omitir, no es necesario colocarlo, pero por convección es bueno manejar el nombre y sepas que esta configuración pertenece a tu Host, Contenedor o el orquestador de los microfrontend. En pocas palabras, no se utiliza, se añade para mayor claridad.
+- **remotes:** Es un objeto que enumera los proyectos que él Contenedor puede buscar para obtener código adicional o el código de nuestras micro-aplicaciones, por eso este objeto tiene las propiedades `restaurants`, `products` y `cart` y cada una tiene como valor la relación con la propiedad `name` en el archivo `webpack.config.js` de cada microfronted, seguido por un `@` para después indicar la URL del archivo `remoteEntry.js`
+- En `webpack.config.js` de nuestro restaurante, tenemos `name: "restaurants"` donde este nombre es igual al valor de la propiedad `restaurnats` del objeto remotes `restaurants@...`, Las cadenas tienen que ser idénticas, tiene que coincidir. Puedes consultar el error que se genera [Cuando el nombre del proyecto remoto no coincide con el contenedor](#cuando-el-nombre-del-proyecto-remoto-no-coincide-con-el-contenedor)
+
+- main.css
+
+```css
+#app-container {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5em;
+  margin: 3em;
+}
+
+#app-container > section {
+  border: 1px solid;
+  padding: 0 2em;
+}
+
+@media (max-width: 900px) {
+  #app-container {
+    grid-template-columns: 1fr;
+    gap: 3em;
+  }
+}
 ```
 
 #### Lista de Productos
@@ -409,88 +573,52 @@ module.exports = {
 };
 ```
 
-#### Contenedor
+Sí ejecutas cada proyecto y al abrir el navegador para ingresar a la dirección http://localhost:8080 podemos notar que la aplicación se ve parecida a la siguiente imagen después de aplicar los estilos.
 
-- index.html
+![Vista final de la aplicación](https://github.com/corteshvictor/microfrontend/blob/main/img/AppFinal.png)
 
-```html
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Buy Food</title>
-    <link rel="stylesheet" href="css/main.css" />
-  </head>
-  <body>
-    <div id="app-container">
-      <section id="app-restaurants"></section>
-      <section id="app-products"></section>
-      <section id="app-cart"></section>
-    </div>
-  </body>
-</html>
-```
+## Posibles errores
 
-- index.js
+A continuación vamos a resaltar los errores mas comunes o típicos que podemos tener y en la mayoría de los casos pueden ser difíciles de detectar.
 
-```javascript
-import("./bootstrap");
-```
+### Cuando el atributo id del html es igual al nombre de nuestra aplicación remota en el contenedor
 
-- bootstrap.js
+![Vista final de la aplicación](https://github.com/corteshvictor/microfrontend/blob/main/img/fnError.png)
 
-```javascript
-import "products/ProductsMain";
-import "cart/CartMain";
-import "restaurants/RestaurantsMain";
+Sólo quiero contarte un poco más sobre este pequeño error, que puedes encontrar y que es difícil de solucionar. Así que en primer lugar, en las herramientas de desarrollo de mi navegador, voy a abrir mi pestaña de Network y vamos a mirar el archivo `remoteEntry.js` que viene de http://localhost:8081/remoteEntry.js, que es nuestra aplicación para listar los restaurantes.
 
-console.log("Lógica del container");
-```
+![Respuesta archivo remoteEntry.js](https://github.com/corteshvictor/microfrontend/blob/main/img/remoteEntryJS.png)
 
-- webpack.config.js
+Y si damos un vistazo a la respuesta, quiero que noten algo, en nuestra línea 9 usted ve que dice `var restaurants;`, se esta declarando una variable y luego asigna un valor a esa variable y el valor que asigna es básicamente el resultado de todas estas cosas de Webpack para acceder al código de nuestro restaurante.
 
-```javascript
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+Cada vez que nuestro navegador carga ese archivo de `remoteEntry.js`, va a buscará una variable `restaurants` dentro de él y tratará de acceder a esa variable para obtener toda la información contenida dentro del archivo `remoteEntry.js`. Así que esta variable del restaurante está siendo establecida en el contenedor y cuando nuestro contenedor está tratando de acceder a remoteEntry.js, va a tratar de buscar una variable llamada `restaurants`.
 
-module.exports = {
-  mode: "development",
-  devServer: {
-    port: 8080,
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-    }),
-    new ModuleFederationPlugin({
-      name: "container",
-      remotes: {
-        products: "products@http://localhost:8082/remoteEntry.js",
-        cart: "cart@http://localhost:8083/remoteEntry.js",
-        restaurants: "restaurants@http://localhost:8081/remoteEntry.js",
-      },
-    }),
-  ],
-};
-```
+Esta variable de `restaurants` está siendo creada por nuestro archivo `remoteEntry.js` qué viene de nuestra aplicación del restaurante. `var restaurants` está siendo declarada como una variable global por lo que podemos imprimirla fácilmente en nuestra consola. En la imagen podemos notar que `restaurants` es un objeto que tiene funciones para interactuar con el código que viene del archivo `remoteEntry.js`.
 
-- main.css
+Así que esencialmente, tenemos un objeto aquí que nos permite acceder a todo el código que estamos buscando para cargar en nuestro contenedor.
 
-```css
-#app-container {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5em;
-  margin: 3em;
-}
+![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/fnError_2.png)
 
-#app-container > section {
-  border: 1px solid;
-  padding: 0 2em;
-}
-```
+Si se nos presenta el error `fn is not a function` intenta imprimir `restaurants` como en la imagen, esa variable global, ya no trae el objeto con funciones, en su lugar obtenemos una referencia a ese elemento HTML, en nuestro caso al `section`. Así que este es el error, es algo muy engañoso.
 
-Si ejecutas cada proyecto y al abrir el navegar para ingresar a la dirección http://localhost:8080 podemos notar que la aplicación se ve como la siguiente imagen después de aplicar los estilos.
+Esto pasa porque al asignar una id a un elemento HTML, tu navegador va a intentar crear una nueva variable global con el mismo nombre exacto que ese id. Como el id de ese elemento se llama restaurants, tu navegador va a tratar de crear una variable global llamada `restaurants`, esa variable global va a sobrescribir la variable global actual, que se define dentro de `remoteEntry.js` y cuando el navegador intenta acceder a `restaurants`, en lugar de obtener nuestro código procedente de la aplicación, en su lugar obtiene un elemento HTML, por este motivo terminamos con este mensaje de error `fn is not a function.`
 
-![Vista Aplicación](https://github.com/corteshvictor/microfrontend/blob/main/img/AppFinal.png)
+Es un error bastante raro, pero debemos tener claro y entender que él id de un elemento HTML va a ser asignado como una variable global y que `remoteEntry.js` que viene de nuestra aplicación de listar restaurantes va a tratar de declarar una variable global también. Por ende, las dos van a entrar en conflicto. Así que para arreglar esto, todo lo que tenemos que hacer es, asegurarnos de que no tenemos algún elemento dentro de nuestro proyecto con un id igual a lo que viene dentro de ese archivo `remoteEntry.js`. En otras palabras, no queremos tener un id con el mismo nombre de nuestra aplicación remota.
+
+### Cuando quieres utilizar un import normal y no un import de función
+
+![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/errorImport.png)
+
+Al utilizar un import normal, vemos que se genera un error por eso tienes que utilizar la función de importación `import("./bootstrap")`, porque permite que Webpack tenga la oportunidad, dentro del navegador de ir y obtener algunas dependencias antes de ejecutar el código de `bootstrap.js`. es decir, de darse cuenta de que antes de ejecutar ese archivo `bootstrap.js`, tenemos que ir a buscar los códigos de nuestras micro-aplicaciones.
+
+Este es el objetivo del archivo `index.js` con la función de importación, es solo para permitir que Webpack tenga la ocasión de obtener JavaScript adicional y asegurarse que tenemos el código del proyecto listo.
+
+### Cuando el nombre del proyecto remoto no coincide con el contenedor
+
+![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/errorNombreRemoto.png)
+
+### Cuando el import de un módulo no coincide con la propiedad remota del ModuleFederetionPlugin
+
+![Se muestra en la consola la variable restaurants](https://github.com/corteshvictor/microfrontend/blob/main/img/errorContenedor_1.png)
+
+Cuando el import intenta llamar al módulo restaurants `import "restaurants/RestaurantsMain"`, este lo busca en los módulos y como no esta va a nuestra configuración del contenedor para obtener ese módulo de los remotos del ModuleFederationPlugin, pero como la propiedad del remoto es diferente a restaurants por eso muestra el error.
